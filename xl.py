@@ -13,12 +13,13 @@ class xl(object):
         rd = xlrd.open_workbook(filename=self.name)
         self.data = {}
         self.colName = [];
-        for index in range(0, len(rd.sheet_names())):
+        for index in range(0, 1):
+            # for index in range(0, len(rd.sheet_names())):
             sheet = rd.sheet_by_index(index)
             # print("sheet:" + sheet.name)
             # print("col:" + str(sheet.ncols), "row:" + str(sheet.nrows))
             self.data[sheet.name] = {}
-            if sheet.ncols >= 1 & sheet.nrows >= 1:
+            if sheet.ncols >= 1 and sheet.nrows >= 1:
                 for col in sheet.row_values(0):
                     self.colName.append(col)
                 for rowIndex in range(1, sheet.nrows):
