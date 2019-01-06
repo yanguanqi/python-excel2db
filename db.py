@@ -1,4 +1,3 @@
-# /usr/bin
 # -*- coding=utf-8 -*-
 
 import sqlite3
@@ -66,8 +65,16 @@ class db(object):
                 print("Insert data erro :" + name + "/n" + str(e))
         print("Insert datas to " + name + " completed!")
 
-    def createview(self):
-        
+    def createview(self,name='',key=''):
+
+        print("select name from sqlite_master where name like \'"+ key+"%_MXYSB\' order by name" )
+        mxysblist = self.conn.execute(
+            "select name from sqlite_master where name like \'" + key + "%_MXYSB\' order by name")
+        jlysblist =self.conn.execute("select name from sqlite_master where name like \'"+key+"%_JLYSB\' order by name" )
+        for jlysbn in jlysblist:
+            print(jlysbn)
+        for mxysbn in mxysblist:
+            print(mxysbn)
 
     def close(self):
         self.conn.close()
