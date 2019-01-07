@@ -9,6 +9,12 @@ class xl(object):
     def __init__(self, name=""):
         self.name = name
 
+    def convet(self, x):
+        if isinstance(x, float):
+            return str(int(x))
+        else:
+            return x
+
     def load(self):
         rd = xlrd.open_workbook(filename=self.name)
         self.data = {}
@@ -24,7 +30,7 @@ class xl(object):
                     self.colName.append(col)
                 for rowIndex in range(1, sheet.nrows):
                     row = sheet.row_values(rowIndex)
-                    self.data[sheet.name][rowIndex - 1] = row
+                    self.data[sheet.name][rowIndex - 1] = list(map(self.convet, row))
 
     def asyncLoad(self):
         rd = xlrd.open_workbook(filename=self.name)

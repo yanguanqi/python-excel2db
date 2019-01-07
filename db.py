@@ -37,11 +37,9 @@ class db(object):
         if len(datas) == 0 or len(self.colname[name]) == 0:
             return
         for sheet in datas.values():
-            sum = len(sheet.values())
             pro = 0
             newdatas = []
             for data in sheet.values():
-                sqlkey = '';
                 newdata = []
                 pro += 1
                 if len(self.colname[name]) >= len(data):
@@ -66,15 +64,24 @@ class db(object):
         print("Insert datas to " + name + " completed!")
 
     def createview(self,name='',key=''):
-
         print("select name from sqlite_master where name like \'"+ key+"%_MXYSB\' order by name" )
         mxysblist = self.conn.execute(
-            "select name from sqlite_master where name like \'" + key + "%_MXYSB\' order by name")
-        jlysblist =self.conn.execute("select name from sqlite_master where name like \'"+key+"%_JLYSB\' order by name" )
-        for jlysbn in jlysblist:
-            print(jlysbn)
-        for mxysbn in mxysblist:
-            print(mxysbn)
-
+            "select name from sqlite_master where name like \'" + key + "%_MXYSB\' order by name").fetchall()
+        print("select name from sqlite_master where name like \'" + key + "%_JLYSB\' order by name")
+        jlysblist = self.conn.execute(
+            "select name from sqlite_master where name like \'" + key + "%_JLYSB\' order by name").fetchall()
+        select = ''
+        for index in range(0, len(mxysblist)):
+            mxysb = mxysblist[index][0]
+            jlysb = jlysblist[index][0]
+            select += "select " + mxysb + ".ID AS ID ," \
+                      + jlysb + ".分项工程编码 AS Code ," \
+                      + jlysb + ".单位工程名称 AS ProjectName ," \
+                      + "\'" + jlysb + "\' AS TableName ," \
+                      + jlysb + ".零号清单编码 as QingdanCode1, " \
+                      + "\'" + name + "\' AS Biaoduan from  " \
+                      + mxysb + " left join " + jlysb \
+                      + " where " + mxysb + ".分项工程编码=" + jlysb + ".分项工程编码 union "
+        self.conn.execute('create view ' + name + ' as ' + select[:-6] + "order by ProjectName")
     def close(self):
         self.conn.close()
