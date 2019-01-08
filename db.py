@@ -26,7 +26,7 @@ class db(object):
             for index in range(0, len(colname)):
                 if colname[index].strip() == "":
                     continue
-                fields += colname[index] + coltype[index] + ","
+                fields += colname[index] + ' '+coltype[index] + ","
                 self.colname[name].append(colname[index])
         try:
             self.conn.execute("create table " + name + " (" + fields[:-1] + ")")

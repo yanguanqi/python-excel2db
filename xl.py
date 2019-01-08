@@ -1,4 +1,4 @@
-# /usr/bin
+#!/usr/bin/env python3
 # -*- coding=utf-8 -*-
 
 import xlrd
@@ -12,6 +12,8 @@ class xl(object):
     def convet(self, x):
         if isinstance(x, float):
             return str(int(x))
+        elif isinstance(x,str):
+            return x.strip()
         else:
             return x
 
